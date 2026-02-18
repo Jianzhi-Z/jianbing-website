@@ -1,0 +1,34 @@
+# 依赖
+node_modules/
+
+# 数据库
+data/*.db
+
+# 环境变量
+.env
+
+# 日志
+logs/
+*.log
+npm-debug.log*
+
+# 运行时数据
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# 上传的图片（可选，如果想版本控制图片请注释）
+# public/images/*
+# !public/images/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
