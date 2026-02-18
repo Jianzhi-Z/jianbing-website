@@ -36,8 +36,8 @@ npm start
 - 后台: http://localhost:3000/admin/login
 
 ### 默认账号
-- 用户名: admin
-- 密码: jianbing2024
+- 用户名: 
+- 密码:
 
 ## 部署到 Vercel
 
