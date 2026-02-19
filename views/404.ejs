@@ -1,0 +1,29 @@
+<% 
+const title = '页面未找到';
+const description = '抱歉，您访问的页面不存在';
+%>
+
+<%- include('partials/header') %>
+
+<section class="py-32 flex items-center justify-center">
+  <div class="text-center" data-animate>
+    <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-dark-surface flex items-center justify-center">
+      <i data-lucide="file-question" class="w-16 h-16 text-primary-500"></i>
+    </div>
+    <h1 class="text-6xl font-bold mb-4">404</h1>
+    <h2 class="text-2xl font-semibold mb-4">页面未找到</h2>
+    <p class="text-dark-text-secondary mb-8 max-w-md mx-auto">抱歉，您访问的页面不存在或已被移除。</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/" class="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span>返回首页</span>
+      </a>
+      <a href="/articles" class="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-dark-surface hover:bg-dark-elevated border border-dark-border rounded-lg font-medium transition-colors">
+        <i data-lucide="book-open" class="w-5 h-5"></i>
+        <span>浏览文章</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
