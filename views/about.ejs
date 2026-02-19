@@ -1,0 +1,156 @@
+<% 
+const title = '关于';
+const description = '了解更多关于我的信息';
+%>
+
+<%- include('partials/header') %>
+
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+      <div data-animate>
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">关于我</h1>
+        <div class="prose prose-invert max-w-none">
+          <p class="text-xl text-dark-text-secondary leading-relaxed mb-6">
+            你好，我是<%= profile.name %>，一名<%= profile.title %>。
+          </p>
+          <p class="text-dark-text-secondary leading-relaxed">
+            <%= profile.bio || '专注于AI智能体开发与编程业务，探索人工智能的无限可能。' %>
+          </p>
+        </div>
+        
+        <div class="mt-8 space-y-4">
+          <% if (profile.email) { %>
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center">
+                <i data-lucide="mail" class="w-5 h-5 text-primary-500"></i>
+              </div>
+              <div>
+                <div class="text-sm text-dark-text-secondary">邮箱</div>
+                <a href="mailto:<%= profile.email %>" class="text-dark-text hover:text-primary-500 transition-colors"><%= profile.email %></a>
+              </div>
+            </div>
+          <% } %>
+          <% if (profile.location) { %>
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center">
+                <i data-lucide="map-pin" class="w-5 h-5 text-primary-500"></i>
+              </div>
+              <div>
+                <div class="text-sm text-dark-text-secondary">位置</div>
+                <span class="text-dark-text"><%= profile.location %></span>
+              </div>
+            </div>
+          <% } %>
+        </div>
+        
+        <div class="flex items-center space-x-4 mt-8">
+          <% if (profile.github) { %>
+            <a href="<%= profile.github %>" target="_blank" class="p-3 rounded-lg bg-dark-surface hover:bg-dark-elevated border border-dark-border transition-colors" aria-label="GitHub">
+              <i data-lucide="github" class="w-6 h-6"></i>
+            </a>
+          <% } %>
+          <% if (profile.twitter) { %>
+            <a href="<%= profile.twitter %>" target="_blank" class="p-3 rounded-lg bg-dark-surface hover:bg-dark-elevated border border-dark-border transition-colors" aria-label="Twitter">
+              <i data-lucide="twitter" class="w-6 h-6"></i>
+            </a>
+          <% } %>
+          <% if (profile.linkedin) { %>
+            <a href="<%= profile.linkedin %>" target="_blank" class="p-3 rounded-lg bg-dark-surface hover:bg-dark-elevated border border-dark-border transition-colors" aria-label="LinkedIn">
+              <i data-lucide="linkedin" class="w-6 h-6"></i>
+            </a>
+          <% } %>
+          <% if (profile.wechat) { %>
+            <div class="relative group">
+              <button class="p-3 rounded-lg bg-dark-surface hover:bg-dark-elevated border border-dark-border transition-colors" aria-label="微信">
+                <i data-lucide="message-circle" class="w-6 h-6"></i>
+              </button>
+              <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-dark-elevated rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                微信: <%= profile.wechat %>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+      
+      <div class="flex justify-center" data-animate data-delay="2">
+        <div class="relative">
+          <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur-2xl opacity-30"></div>
+          <img src="<%= profile && profile.avatar ? profile.avatar : '/images/avatar.jpg' %>" alt="<%= profile.name %>" class="relative rounded-2xl shadow-2xl w-full max-w-md">
+        </div>
+      </div>
+    </div>
+    
+    <div class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 text-center" data-animate>技能专长</h2>
+      <div class="flex flex-wrap justify-center gap-3" data-animate>
+        <% if (profile.skills) { %>
+          <% profile.skills.split(',').forEach(skill => { %>
+            <span class="px-6 py-3 bg-dark-surface rounded-full text-dark-text border border-dark-border hover:border-primary-500/50 hover:bg-primary-500/5 transition-all cursor-default">
+              <%= skill.trim() %>
+            </span>
+          <% }) %>
+        <% } else { %>
+          <span class="px-6 py-3 bg-dark-surface rounded-full text-dark-text border border-dark-border">AI智能体</span>
+          <span class="px-6 py-3 bg-dark-surface rounded-full text-dark-text border border-dark-border">Python</span>
+          <span class="px-6 py-3 bg-dark-surface rounded-full text-dark-text border border-dark-border">LangChain</span>
+          <span class="px-6 py-3 bg-dark-surface rounded-full text-dark-text border border-dark-border">OpenAI</span>
+          <span class="px-6 py-3 bg-dark-surface rounded-full text-dark-text border border-dark-border">React</span>
+          <span class="px-6 py-3 bg-dark-surface rounded-full text-dark-text border border-dark-border">Node.js</span>
+        <% } %>
+      </div>
+    </div>
+    
+    <div class="mb-20">
+      <h2 class="text-3xl font-bold mb-12 text-center" data-animate>工作经历</h2>
+      <div class="max-w-3xl mx-auto space-y-8">
+        <div class="relative pl-8 border-l-2 border-primary-500/30" data-animate>
+          <div class="absolute left-0 top-0 w-4 h-4 -translate-x-[9px] rounded-full bg-primary-500"></div>
+          <div class="bg-dark-surface rounded-lg p-6 border border-dark-border">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+              <h3 class="text-xl font-semibold">AI开发工程师</h3>
+              <span class="text-primary-500 text-sm font-medium">2023 - 至今</span>
+            </div>
+            <p class="text-dark-text-secondary mb-2">自由职业 / 远程工作</p>
+            <p class="text-dark-text-secondary text-sm">专注于AI智能体开发，为多个客户提供AI解决方案，包括智能客服、数据分析、自动化流程等。</p>
+          </div>
+        </div>
+        
+        <div class="relative pl-8 border-l-2 border-dark-border" data-animate>
+          <div class="absolute left-0 top-0 w-4 h-4 -translate-x-[9px] rounded-full bg-dark-border"></div>
+          <div class="bg-dark-surface rounded-lg p-6 border border-dark-border">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+              <h3 class="text-xl font-semibold">全栈开发工程师</h3>
+              <span class="text-dark-text-secondary text-sm">2020 - 2023</span>
+            </div>
+            <p class="text-dark-text-secondary mb-2">某科技公司</p>
+            <p class="text-dark-text-secondary text-sm">负责前后端开发，参与多个Web应用和移动应用的开发，积累了丰富的工程经验。</p>
+          </div>
+        </div>
+        
+        <div class="relative pl-8 border-l-2 border-dark-border" data-animate>
+          <div class="absolute left-0 top-0 w-4 h-4 -translate-x-[9px] rounded-full bg-dark-border"></div>
+          <div class="bg-dark-surface rounded-lg p-6 border border-dark-border">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+              <h3 class="text-xl font-semibold">计算机科学学士</h3>
+              <span class="text-dark-text-secondary text-sm">2016 - 2020</span>
+            </div>
+            <p class="text-dark-text-secondary mb-2">某大学</p>
+            <p class="text-dark-text-secondary text-sm">主修计算机科学与技术，学习算法、数据结构、软件工程等核心课程。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center" data-animate>
+      <h2 class="text-3xl font-bold mb-4">有合作意向？</h2>
+      <p class="text-dark-text-secondary mb-8 max-w-xl mx-auto">无论是AI项目开发还是技术咨询，我都很乐意与您交流</p>
+      <a href="mailto:<%= profile.email || 'hello@jianbing.dev' %>" class="inline-flex items-center space-x-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+        <i data-lucide="mail" class="w-5 h-5"></i>
+        <span>联系我</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
