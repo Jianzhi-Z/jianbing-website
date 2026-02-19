@@ -528,4 +528,50 @@ app.listen(PORT, async () => {
   }
 });
 
+
+// ========== API 路由（供 OpenClaw 调用）==========
+
+// 验证 API Key
+const verifyApiKey = (req, res, next) => {
+  const apiKey = req.headers['x-api-key'] || req.query.api_key;
+  if (apiKey !== process.env.API_KEY) {
+    return res.status(401).json({ error: 'Invalid API Key' });
+  }
+  next();
+};
+
+// 发布文章 API
+app.post('/api/articles', verifyApiKey, async (req, res) => {
+  try {
+    const { title, slug, content, category, tags } = req.body;
+    
+    if (!title || !slug || !content) {
+      return res.status(400).json({ error: '缺少必填字段' });
+    }
+    
+    const article = await db.createArticle({
+      title,
+      slug,
+      content,
+      excerpt: content.substring(0, 200) + '...',
+      category: category || '默认分类',
+      tags: tags || '',
+      status: 'published'
+    });
+    
+    res.json({ 
+      success: true, 
+      url: `https://${req.headers.host}/articles/${article.slug}`
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 测试接口（无需密钥）
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 module.exports = app;
+
