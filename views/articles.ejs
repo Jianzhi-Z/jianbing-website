@@ -1,0 +1,73 @@
+<% 
+const title = '文章';
+const description = '探索AI智能体与编程的思考和实践';
+%>
+
+<%- include('layout', { body: `
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-animate>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">文章</h1>
+        <p class="text-dark-text-secondary text-lg max-w-2xl mx-auto">探索AI智能体与编程的思考和实践，分享技术心得与项目经验</p>
+      </div>
+      
+      <div class="flex flex-wrap justify-center gap-2 mb-12" data-animate>
+        <a href="/articles" class="px-4 py-2 rounded-full text-sm font-medium transition-all ${currentCategory === '全部' ? 'bg-primary-600 text-white' : 'bg-dark-surface text-dark-text-secondary hover:text-dark-text'}">
+          全部
+        </a>
+        ${categories.map(cat => `
+          <a href="/articles?category=${encodeURIComponent(cat)}" class="px-4 py-2 rounded-full text-sm font-medium transition-all ${currentCategory === cat ? 'bg-primary-600 text-white' : 'bg-dark-surface text-dark-text-secondary hover:text-dark-text'}">
+            ${cat}
+          </a>
+        `).join('')}
+      </div>
+      
+      <div class="space-y-8">
+        ${articles.map((article, index) => `
+          <article class="card-hover bg-dark-surface rounded-xl overflow-hidden border border-dark-border" data-animate data-delay="${index % 3 + 1}">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-1/3 aspect-video md:aspect-auto overflow-hidden">
+                <img src="${article.cover_image || 'https://picsum.photos/400/300?random=' + article.id}" alt="${article.title}" class="w-full h-full object-cover transition-transform hover:scale-105">
+              </div>
+              <div class="md:w-2/3 p-6 md:p-8 flex flex-col justify-center">
+                <div class="flex items-center space-x-3 mb-3">
+                  <span class="px-3 py-1 text-xs font-medium bg-primary-500/10 text-primary-400 rounded-full">${article.category}</span>
+                  <span class="text-dark-text-secondary text-sm">${formatDate(article.created_at)}</span>
+                  <span class="text-dark-text-secondary text-sm flex items-center space-x-1">
+                    <i data-lucide="eye" class="w-4 h-4"></i>
+                    <span>${article.view_count || 0}</span>
+                  </span>
+                </div>
+                <h2 class="text-2xl font-bold mb-3 hover:text-primary-500 transition-colors">
+                  <a href="/articles/${article.slug}">${article.title}</a>
+                </h2>
+                <p class="text-dark-text-secondary mb-4 line-clamp-2">${article.excerpt || '暂无摘要'}</p>
+                <div class="flex items-center justify-between">
+                  <div class="flex flex-wrap gap-2">
+                    ${article.tags ? article.tags.split(',').slice(0, 3).map(tag => `
+                      <span class="px-2 py-1 text-xs bg-dark-elevated rounded text-dark-text-secondary">${tag.trim()}</span>
+                    `).join('') : ''}
+                  </div>
+                  <a href="/articles/${article.slug}" class="inline-flex items-center space-x-2 text-primary-500 hover:text-primary-400 text-sm font-medium transition-colors">
+                    <span>阅读更多</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        `).join('')}
+      </div>
+      
+      ${articles.length === 0 ? `
+        <div class="text-center py-20" data-animate>
+          <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-dark-surface flex items-center justify-center">
+            <i data-lucide="file-text" class="w-10 h-10 text-dark-text-secondary"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">暂无文章</h3>
+          <p class="text-dark-text-secondary">该分类下暂时没有文章，请查看其他分类</p>
+        </div>
+      ` : ''}
+    </div>
+  </section>
+` }) %>
