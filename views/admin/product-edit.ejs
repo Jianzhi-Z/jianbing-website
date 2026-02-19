@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product ? '编辑产品' : '新建产品' %> - <%= siteTitle %></title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: { 500: '#6366F1', 600: '#4F46E5' },
+            dark: { bg: '#0F172A', surface: '#1E293B', elevated: '#334155', border: '#475569', text: '#F1F5F9', 'text-secondary': '#94A3B8' }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .sidebar-link:hover, .sidebar-link.active { background: rgba(99, 102, 241, 0.1); color: #6366F1; }
+  </style>
+</head>
+<body class="bg-dark-bg text-dark-text">
+  <div class="flex h-screen">
+    <aside class="w-64 bg-dark-surface border-r border-dark-border flex-shrink-0 hidden md:flex flex-col">
+      <div class="p-6 border-b border-dark-border">
+        <a href="/" class="flex items-center space-x-2 text-primary-500">
+          <i data-lucide="zap" class="w-6 h-6"></i>
+          <span class="font-bold text-lg">煎饼</span>
+        </a>
+      </div>
+      
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="/admin/dashboard" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-dark-text-secondary hover:text-dark-text">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>仪表盘</span>
+        </a>
+        <a href="/admin/articles" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-dark-text-secondary hover:text-dark-text">
+          <i data-lucide="file-text" class="w-5 h-5"></i>
+          <span>文章管理</span>
+        </a>
+        <a href="/admin/products" class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-lg text-primary-500">
+          <i data-lucide="box" class="w-5 h-5"></i>
+          <span>产品管理</span>
+        </a>
+        <a href="/admin/profile" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg text-dark-text-secondary hover:text-dark-text">
+          <i data-lucide="user" class="w-5 h-5"></i>
+          <span>个人资料</span>
+        </a>
+      </nav>
+      
+      <div class="p-4 border-t border-dark-border">
+        <a href="/admin/logout" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+          <i data-lucide="log-out" class="w-5 h-5"></i>
+          <span>退出登录</span>
+        </a>
+      </div>
+    </aside>
+    
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <header class="bg-dark-surface border-b border-dark-border h-16 flex items-center justify-between px-6">
+        <div class="flex items-center space-x-4">
+          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-dark-elevated">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+          <h1 class="text-xl font-semibold"><%= product ? '编辑产品' : '新建产品' %></h1>
+        </div>
+      </header>
+      
+      <main class="flex-1 overflow-y-auto p-6">
+        <form action="<%= product ? '/admin/products/' + product.id + '?_method=PUT' : '/admin/products' %>" method="POST" enctype="multipart/form-data" class="max-w-4xl mx-auto">
+          <div class="grid lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-6">
+              <div class="bg-dark-surface rounded-xl p-6 border border-dark-border">
+                <h3 class="font-semibold mb-4">基本信息</h3>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-2">产品名称</label>
+                    <input type="text" name="name" value="<%= product ? product.name : '' %>" required
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                      placeholder="请输入产品名称">
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium mb-2">URL别名 (slug)</label>
+                    <input type="text" name="slug" value="<%= product ? product.slug : '' %>" required
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                      placeholder="例如：my-product">
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium mb-2">简短描述</label>
+                    <input type="text" name="short_description" value="<%= product ? product.short_description : '' %>"
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                      placeholder="一句话描述产品">
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium mb-2">详细描述</label>
+                    <textarea name="description" rows="6" required
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none resize-none"
+                      placeholder="详细介绍产品功能、特点等"><%= product ? product.description : '' %></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-dark-surface rounded-xl p-6 border border-dark-border">
+                <h3 class="font-semibold mb-4">图片</h3>
+                <input type="file" name="images" accept="image/*" multiple
+                  class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                <p class="text-dark-text-secondary text-sm mt-2">支持多张图片，第一张将作为封面</p>
+                
+                <% if (product && product.images) { %>
+                  <div class="mt-4 grid grid-cols-3 gap-4">
+                    <% product.images.split(',').forEach(img => { %>
+                      <img src="<%= img %>" alt="" class="rounded-lg object-cover h-24 w-full">
+                    <% }) %>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+            
+            <div class="space-y-6">
+              <div class="bg-dark-surface rounded-xl p-6 border border-dark-border">
+                <h3 class="font-semibold mb-4">产品设置</h3>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-2">技术栈</label>
+                    <input type="text" name="tech_stack" value="<%= product ? product.tech_stack : '' %>"
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                      placeholder="React, Node.js, Python">
+                    <p class="text-dark-text-secondary text-sm mt-1">用逗号分隔</p>
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium mb-2">项目链接</label>
+                    <input type="url" name="project_url" value="<%= product ? product.project_url : '' %>"
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                      placeholder="https://...">
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium mb-2">GitHub链接</label>
+                    <input type="url" name="github_url" value="<%= product ? product.github_url : '' %>"
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                      placeholder="https://github.com/...">
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium mb-2">排序</label>
+                    <input type="number" name="display_order" value="<%= product ? product.display_order : '0' %>"
+                      class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                      placeholder="0">
+                    <p class="text-dark-text-secondary text-sm mt-1">数字越小越靠前</p>
+                  </div>
+                  
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" name="featured" value="1" <%= product && product.featured ? 'checked' : '' %> class="w-4 h-4 text-primary-500 rounded focus:ring-primary-500">
+                    <span>设为精选产品</span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="flex flex-col space-y-3">
+                <button type="submit" class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center space-x-2">
+                  <i data-lucide="save" class="w-5 h-5"></i>
+                  <span><%= product ? '保存修改' : '创建产品' %></span>
+                </button>
+                <a href="/admin/products" class="w-full py-3 px-4 bg-dark-elevated hover:bg-dark-border border border-dark-border text-dark-text font-medium rounded-lg transition-colors text-center">
+                  取消
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+  
+  <script>
+    lucide.createIcons();
+    
+    const nameInput = document.querySelector('input[name="name"]');
+    const slugInput = document.querySelector('input[name="slug"]');
+    
+    nameInput.addEventListener('blur', () => {
+      if (!slugInput.value && nameInput.value) {
+        slugInput.value = nameInput.value.toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s]+/g, '-')
+          .substring(0, 50);
+      }
+    });
+  </script>
+</body>
+</html>
