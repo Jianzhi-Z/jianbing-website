@@ -32,8 +32,8 @@ const description = article.excerpt;
       <% } %>
     </header>
     
-    <div class="text-light-text dark:text-dark-text leading-relaxed whitespace-pre-wrap markdown-content" data-animate>
-      <%= article.content %>
+    <div class="markdown-body text-light-text dark:text-dark-text leading-relaxed" data-animate>
+      <%- renderMarkdown(article.content) %>
     </div>
     
     <% if (article.tags) { %>
